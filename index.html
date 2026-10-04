@@ -127,6 +127,66 @@
       height: 100%;
       object-fit: contain;
     }
+    .video-loading-hint {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0, 0, 0, 0.88);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #f1f5f9;
+      font-size: 14px;
+      z-index: 10;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    }
+    .loading-spin {
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(255,255,255,0.2);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .player-aux-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      background: rgba(10, 15, 24, 0.85);
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      font-size: 13px;
+      color: #94a3b8;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .stream-tip { display: flex; align-items: center; gap: 6px; font-size: 12px; }
+    .stream-actions { display: flex; gap: 10px; }
+    .aux-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      text-decoration: none;
+      color: #f1f5f9;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      transition: all 0.2s;
+    }
+    .aux-btn:hover {
+      background: var(--accent);
+      color: #000;
+      border-color: var(--accent);
+    }
     .player-quickbar {
       display: flex;
       justify-content: space-between;
@@ -372,10 +432,14 @@
     <!-- Cinema Video Box -->
     <div class="video-box">
       <div class="video-wrapper">
-        <video id="mainVideo" controls poster="assets/images/hero_gta5.jpg">
+        <video id="mainVideo" controls playsinline webkit-playsinline preload="metadata" poster="assets/images/hero_gta5.jpg">
           <source src="gta5_lore.mp4" type="video/mp4">
           您的浏览器暂不支持 HTML5 视频播放。
         </video>
+        <div id="videoLoadingHint" class="video-loading-hint" style="display:none;">
+          <div class="loading-spin"></div>
+          <span id="loadingHintText">视频缓冲中，请稍候...</span>
+        </div>
       </div>
       <div class="player-quickbar">
         <div class="current-chapter-display">
@@ -386,6 +450,21 @@
           <button class="speed-btn active" onclick="setSpeed(1.0, this)">1.0x</button>
           <button class="speed-btn" onclick="setSpeed(1.25, this)">1.25x</button>
           <button class="speed-btn" onclick="setSpeed(1.5, this)">1.5x</button>
+        </div>
+      </div>
+      <div class="player-aux-bar">
+        <div class="stream-tip">
+          <span>⚡ 1080P 超清 Web 串流优化已生效 (FastStart 零等待即开即看)</span>
+        </div>
+        <div class="stream-actions">
+          <a href="gta5_lore.mp4" target="_blank" class="aux-btn">
+            <span>在新窗口打开视频</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+          </a>
+          <a href="gta5_lore.mp4" download="gta5_lore.mp4" class="aux-btn">
+            <span>下载原片 MP4</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          </a>
         </div>
       </div>
     </div>
@@ -756,12 +835,40 @@
 
   <script>
     const video = document.getElementById('mainVideo');
+    const loadingHint = document.getElementById('videoLoadingHint');
+    const loadingText = document.getElementById('loadingHintText');
     const timestamps = [0.0, 39.8, 78.16, 115.63, 153.01, 190.91];
-    const sceneTitles = ["\u7f6a\u6076\u524d\u56e0 \u00b7 \u5317\u6768\u514b\u987f\u80cc\u53db\u4e0e\u5047\u6b7b\u9690\u9000", "\u547d\u8fd0\u4ea4\u6c47 \u00b7 \u5077\u8f66\u9752\u5e74\u4e0e\u91cd\u51fa\u6c5f\u6e56", "\u75af\u72d7\u5165\u5c40 \u00b7 \u5d14\u4f5b\u8bc6\u7834\u8001\u53cb\u91d1\u8749\u8131\u58f3", "\u56db\u9762\u695a\u6b4c \u00b7 \u7279\u5de5\u8981\u631f\u4e0e\u8d44\u672c\u538b\u69a8", "\u4e16\u7eaa\u5927\u6848 \u00b7 \u8054\u5408\u50a8\u84c44\u5428\u9ec4\u91d1\u5927\u52ab\u6848", "\u7ec8\u5c40\u6289\u62e9 \u00b7 \u7b2c\u4e09\u79cd\u9009\u62e9\uff1a\u4e09\u7537\u4e00\u72d7\u5927\u56e2\u5706\uff01"];
+    const sceneTitles = [
+      "罪恶前因 · 北杨克顿背叛与假死隐退",
+      "命运交汇 · 偷车青年与重出江湖",
+      "疯狗入局 · 崔佛识破老友金蝉脱壳",
+      "四面楚歌 · 特工要挟与资本压榨",
+      "世纪大案 · 联合储蓄4吨黄金大劫案",
+      "终局抉择 · 第三种选择：三男一狗大团圆！"
+    ];
+
+    if (loadingHint) {
+      video.addEventListener('waiting', () => {
+        if (loadingText) loadingText.innerText = '视频缓冲中，请稍候...';
+        loadingHint.style.display = 'flex';
+      });
+      video.addEventListener('canplay', () => {
+        loadingHint.style.display = 'none';
+      });
+      video.addEventListener('playing', () => {
+        loadingHint.style.display = 'none';
+      });
+      video.addEventListener('error', () => {
+        loadingHint.style.display = 'flex';
+        if (loadingText) {
+          loadingText.innerHTML = '<span style="color:#f87171;">⚠️ 视频加载较慢，建议点击下方【在新窗口打开视频】或【下载原片】直接观看</span>';
+        }
+      });
+    }
 
     function jumpToChapter(seconds, idx) {
       video.currentTime = seconds;
-      video.play();
+      video.play().catch(e => console.warn('Autoplay restricted or loading:', e));
       updateChapterUI(idx - 1);
     }
 
