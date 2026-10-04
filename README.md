@@ -1,76 +1,47 @@
-# GTA5：洛圣都三叉戟的爱恨情仇与世纪大劫案
+# GTA5 · 洛圣都三叉戟
 
-> 6幕现代犯罪讽刺全景：从北杨克顿假死出卖、偷车青年意外拜师，到崔佛疯狗识破假死、联合储蓄4吨黄金世纪劫案，与拒绝当二五仔的第三种选择！
+围绕麦克、富兰克林和崔佛，用六幕视频串起背叛、重逢与联合储蓄劫案。
 
-[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Live%20Showcase-brightgreen?style=for-the-badge&logo=github)](https://holynova.github.io/gta5-lore/)
-[![Hyperframes](https://img.shields.io/badge/Rendered%20with-Hyperframes%203.0-orange?style=for-the-badge)](https://hyperframes.heygen.com)
-[![Voice](https://img.shields.io/badge/Voice-YunjianNeural-blue?style=for-the-badge)](https://azure.microsoft.com/en-us/products/cognitive-services/text-to-speech/)
+A six-chapter Chinese recap of Michael, Franklin and Trevor’s intertwined story.
 
----
+[在线体验](https://gta5-lore.xiaosang.cc/) · [源码](https://github.com/holynova/gta5-lore)
 
-## 🌐 在线体验与直达链接
-👉 **点击直接访问 GitHub Pages 视频与互动播放器**:  
-**[https://holynova.github.io/gta5-lore/](https://holynova.github.io/gta5-lore/)**
+![GTA5 · 洛圣都三叉戟：真实页面截图](./assets/readme/screenshot.png)
 
----
+## 可以做什么
 
-## 🎨 视觉风格与工程规格
-- **专属配色主题**: `富兰克林美钞绿 (#22c55e) + 好莱坞落日紫 (#a855f7) + 崔佛荒漠橙 (#f97316)`
-- **视频规格**: 1920x1080 30FPS，基于 Hyperframes 3.0 ANGLE Metal 硬件加速录制
-- **配音音调**: `edge-tts --voice zh-CN-YunjianNeural --rate=+3%`（慷慨激昂纪录片大片气势）
-- **氛围原画**: 纯正 4K/1080P 官方与 Nano 级高精概念美术
-- **交互特色**: 
-  - 严密 6 幕因果时间线（起因 ➔ 转折 ➔ 危机 ➔ 保底/抉择 ➔ 决战 ➔ 破晓/终局）
-  - 醒目大字、因果分类框（`【起因】`、`【冲突】`、`【后果】`）、简练 Bullets 要点
-  - **画面底部绝对无进度条**，极简高级视觉流
+- 沿人物关系与事件因果回顾主线。
+- 提供在线成片和分幕工程文件。
 
----
+## 观看与工程
 
-## 📜 六幕剧情前因后果全景
+打开在线页面播放，或选择章节定位观看。包含主线与结局剧透。
 
-### Stage 01: 罪恶前因 · 北杨克顿背叛与假死隐退
-- **时间线节点**: `TIMELINE 01 / NORTH YANKTON BETRAYAL`
-- **出场焦点**: **迈克尔·迪圣塔** (退役大盗)
-- **核心叙事**: 玩GTA5如果只顾着开车兜风，那可就太亏了，三个主角的爱恨因果其实极其狗血精彩！一切故事的大前因，发生在2004年的北杨克顿！老麦迈克尔当时厌倦了亡命天涯，为了老婆孩子，背地里跟FIB特工戴夫做了肮脏交易：故意搞砸一场银行劫案！结果同伙布拉德替死中枪被埋，疯子崔佛开枪拼杀逃入雪原，而老麦则假死脱身，进入证人保护计划，住进洛圣都千万豪宅！他以为自己彻底洗白了，殊不知纸永远包不住火！
+[打开成片](https://gta5-lore.xiaosang.cc/gta5_lore.mp4) · [仓库中的视频](./gta5_lore.mp4)
 
-### Stage 02: 命运交汇 · 偷车青年与重出江湖
-- **时间线节点**: `TIMELINE 02 / FRANKLIN MEETS MICHAEL`
-- **出场焦点**: **富兰克林·克林顿** (街头新星)
-- **核心叙事**: 命运的齿轮从一个不起眼的偷车委托开始转动！贫民窟小年轻富兰克林帮车行老板去麦克豪宅收车，不料被后座上的老麦拿枪顶住了后脑勺！老麦欣赏这小伙子的胆识与车技，两人一见如故成了师徒！然而好景不长，老麦撞破妻子跟网球教练偷情，暴怒之下开车拉垮了一栋悬崖豪宅，结果那竟是墨西哥大毒枭马德拉索的情妇家！面对两百五十万美元的索命巨债，老麦只能带上小富，重操旧业去抢劫顶级珠宝店！
+实测成片：1920 × 1080，30 fps，H.264 + AAC；时长 3:51，文件约 12.4 MiB。
 
-### Stage 03: 疯狗入局 · 崔佛识破老友金蝉脱壳
-- **时间线节点**: `TIMELINE 03 / TREVOR'S RAGE & REUNION`
-- **出场焦点**: **崔佛·菲利普** (沙漠狂人)
-- **核心叙事**: 珠宝店大劫案虽然赚翻了，但老麦逃跑时顺口说了一句当年的标志性台词：“你每天忘记一千件事，为什么不把这件事也忘了？”！这句话通过电视新闻，直接传到了沙漠拖车营地里！正跟飞车党厮混的疯子崔佛听到这句话当场五雷轰顶：这他妈是迈克尔的口头禅！迈克尔根本没死！暴怒与被欺骗的痛苦瞬间吞噬了崔佛，他狂暴灭掉整个失落摩托车帮，一路飙车杀进洛圣都，当面跟老麦当面对质！
+`index.html` 是公开播放器；`composition.html` 与 `compositions/` 保留视频合成源码。旁白和配乐在 `assets/`。
 
-### Stage 04: 四面楚歌 · 特工要挟与资本压榨
-- **时间线节点**: `TIMELINE 04 / ENCIRCLED BY CORRUPTION`
-- **出场焦点**: **德温 & FIB黑手** (幕后黑手)
-- **核心叙事**: 三个人聚在一起不仅没过上好日子，反而陷入了四面楚歌的灭顶之灾！老麦的复出引来了老搭档FIB特工戴夫，戴夫的上司海因斯更是拿老麦的黑历史当把柄，逼他们抢劫IAA生化实验室、甚至火烧FIB大楼替自己洗清贪污罪证！更恶心的是亿万富翁德温·维斯顿，哄骗他们去偷价值连城的顶级超跑，事后却一分钱不给！官方特工黑吃黑，资本大鳄吃干抹净，三人组成了各方势力随时准备灭口的安全套！
+## 本地预览
 
-### Stage 05: 世纪大案 · 联合储蓄4吨黄金大劫案
-- **时间线节点**: `TIMELINE 05 / THE BIG SCORE`
-- **出场焦点**: **联合储蓄世纪大案** (两亿美金)
-- **核心叙事**: 为了彻底翻盘，三人组抛下所有个人恩怨，在军师莱斯特的指挥下，发起了整个犯罪史上最疯狂的行动——“联合储蓄大劫案”！调动巨型地下盾构机挖穿金库防线，在全城最高警报下拉出整整四吨重、价值两亿多美元的纯金金条！小富开着重型改转车疯狂狂飙，崔佛开着双旋翼直升机在火车上空精准吊运，老麦手持火神炮压制整整三个街区的防暴警察！四吨黄金到手，全员实现两亿美元的财富自由！
-
-### Stage 06: 终局抉择 · 第三种选择：三男一狗大团圆！
-- **时间线节点**: `TIMELINE 06 / THE THIRD OPTION: DEATHWISH`
-- **出场焦点**: **洛圣都三叉戟** (宁死不当二五仔)
-- **核心叙事**: 黄金刚分完，小富的手表就响起了催命铃声：FIB高层逼他杀掉不可控的崔佛；紧接着德温又打来电话，威逼他杀掉老麦！杀A还是杀B？小富直接给出了全游戏最硬气的回答：老子选C——宁死不当二五仔！三人立刻在铸造厂集结，联手打退FIB与雇佣军围攻，随后兵分三路精准清算仇敌：做掉史崔奇、暗杀海因斯、枪决陈伟，最后三人合力把被塞进行李箱的德温，从落日悬崖连人带车推入太平洋！兄弟齐心，制霸洛圣都！
-
-
-
----
-
-## 🚀 本地运行与开发
 ```bash
-# 本地预览播放器
 python3 -m http.server 8080
-# 浏览器打开 http://localhost:8080
-
-# 重新渲染视频
-npx hyperframes render -o gta5_lore.mp4 --workers 1
 ```
 
----
-*Created with Hyperframes Video Engine & Antigravity Agentic Studio.*
+打开 http://localhost:8080/。播放器直接使用仓库成片，无需先渲染。
+
+重新渲染需安装工程依赖和可用的 Chrome；在 HyperFrames 中使用 `composition.html` 合成入口，避免把播放器页面当作视频时间线。
+
+影视化剧情是作者的剪辑与解释，游戏角色、官方素材及相关商标归各自权利人；这是非官方项目。
+
+<img src="./assets/readme/qr.png" width="144" alt="扫码打开https://gta5-lore.xiaosang.cc/">
+
+## 发布
+
+```bash
+npx --yes wrangler@4.128.0 deploy --dry-run --config wrangler.jsonc
+npx --yes wrangler@4.128.0 deploy --config wrangler.jsonc
+```
+
+从 `main` 同一提交在本地手动发布到Cloudflare Workers。正式地址：[https://gta5-lore.xiaosang.cc/](https://gta5-lore.xiaosang.cc/)。 `.assetsignore` 限定公开播放器/站点资源，排除合成工程、开发文件与未供页面使用的大体积音频/字体。
