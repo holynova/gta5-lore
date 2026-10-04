@@ -1,0 +1,443 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <script src="assets/gsap.min.js"></script>
+  <style>
+    @font-face {
+      font-family: LabChinese;
+      src: url('assets/PingFang.ttc');
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    #root {
+      position: absolute;
+      inset: 0;
+      background: #060b0d;
+      color: #f1f5f9;
+      font-family: LabChinese, -apple-system, sans-serif;
+      overflow: hidden;
+    }
+    .bg-wrap {
+      position: absolute;
+      inset: 0;
+      background: url('assets/images/scene06_ending.jpg') center/cover no-repeat;
+      opacity: 0.32;
+      filter: brightness(0.7) contrast(1.2) saturate(1.1);
+    }
+    .bg-overlay {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 35%, rgba(6,8,13,0.3) 0%, rgba(5,6,9,0.92) 80%);
+    }
+    .ambient-glow {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 90%, rgba(245, 158, 11, 0.08) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    /* Global Timeline Rail */
+    .timeline-rail {
+      position: absolute;
+      left: 70px;
+      right: 70px;
+      top: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 15;
+    }
+    .timeline-steps {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .timeline-node {
+      padding: 5px 12px;
+      border-radius: 18px;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      background: rgba(255, 255, 255, 0.06);
+      color: #64748b;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .timeline-node.active {
+      background: rgba(255, 255, 255, 0.15);
+      color: #22c55e;
+      border-color: #22c55e;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+    }
+    .timeline-arrow {
+      color: #475569;
+      font-size: 13px;
+    }
+    .game-brand {
+      font-size: 16px;
+      color: #94a3b8;
+      letter-spacing: 2px;
+      font-weight: 700;
+    }
+
+    /* Hero Title Area */
+    .title-area {
+      position: absolute;
+      left: 70px;
+      right: 70px;
+      top: 86px;
+      z-index: 10;
+    }
+    .eyebrow-tag {
+      display: inline-block;
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 2.5px;
+      color: #22c55e;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+    .main-title {
+      font-size: 46px;
+      font-weight: 900;
+      line-height: 1.18;
+      margin: 0;
+      letter-spacing: 2px;
+      background: linear-gradient(135deg, #ffffff 30%, #22c55e 90%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 4px 15px rgba(0,0,0,0.8));
+    }
+
+    /* Split Content */
+    .content-split {
+      position: absolute;
+      left: 70px;
+      right: 70px;
+      top: 195px;
+      bottom: 110px;
+      display: flex;
+      gap: 32px;
+      z-index: 10;
+    }
+
+    /* Left Column */
+    .logic-column {
+      flex: 1.15;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 14px;
+    }
+    .logic-box {
+      background: rgba(12, 22, 20, 0.9);
+      border: 1.5px solid rgba(255, 255, 255, 0.1);
+      border-radius: 14px;
+      padding: 18px 22px;
+      backdrop-filter: blur(14px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    }
+    .box-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+    .box-pill {
+      font-size: 13px;
+      font-weight: 800;
+      padding: 3px 9px;
+      border-radius: 6px;
+      letter-spacing: 1px;
+    }
+    .box-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: #f8fafc;
+      letter-spacing: 1px;
+    }
+    .box-bullets {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .bullet-item {
+      font-size: 17px;
+      line-height: 1.45;
+      color: #cbd5e1;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .bullet-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      margin-top: 9px;
+      flex-shrink: 0;
+    }
+
+    /* Right Column: Character / Scene Card */
+    .art-column {
+      flex: 0.85;
+      position: relative;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 2px solid rgba(34, 197, 94, 0.35);
+      background: #0d111a;
+      box-shadow: 0 20px 45px rgba(0,0,0,0.8);
+    }
+    .art-img-wrap {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+    .art-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+    .art-gradient-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(6,8,13,0.1) 40%, rgba(6,8,13,0.95) 100%);
+    }
+    .art-info-overlay {
+      position: absolute;
+      left: 22px;
+      right: 22px;
+      bottom: 22px;
+      z-index: 5;
+    }
+    .art-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid #22c55e;
+      color: #22c55e;
+      margin-bottom: 6px;
+    }
+    .art-name {
+      font-size: 30px;
+      font-weight: 900;
+      color: #ffffff;
+      margin: 0 0 4px 0;
+      letter-spacing: 1.5px;
+      text-shadow: 0 3px 10px rgba(0,0,0,0.8);
+    }
+    .art-desc {
+      font-size: 16px;
+      color: #cbd5e1;
+      line-height: 1.4;
+      margin: 0;
+    }
+
+    /* Bottom Floating Subtitle (No Progress Bar!) */
+    .caption-container {
+      position: absolute;
+      left: 70px;
+      right: 70px;
+      bottom: 24px;
+      height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 25;
+    }
+    .caption-box {
+      position: absolute;
+      background: rgba(8, 11, 18, 0.94);
+      backdrop-filter: blur(16px);
+      border: 1.5px solid rgba(34, 197, 94, 0.35);
+      padding: 12px 40px;
+      border-radius: 36px;
+      font-size: 26px;
+      font-weight: 700;
+      color: #ffffff;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.85);
+      text-align: center;
+      white-space: nowrap;
+      letter-spacing: 1px;
+    }
+  </style>
+</head>
+<body>
+  <div id="root" data-composition-id="scene-06" data-start="0" data-duration="40.23" data-width="1920" data-height="1080">
+    <div class="bg-wrap">
+      <div class="bg-overlay"></div>
+      <div class="ambient-glow"></div>
+    </div>
+
+    <!-- Timeline Rail -->
+    <div class="timeline-rail">
+      <div class="timeline-steps">
+        <div class="timeline-node">01 罪恶前因</div><span class="timeline-arrow">➔</span><div class="timeline-node">02 命运交汇</div><span class="timeline-arrow">➔</span><div class="timeline-node">03 疯狗入局</div><span class="timeline-arrow">➔</span><div class="timeline-node">04 四面楚歌</div><span class="timeline-arrow">➔</span><div class="timeline-node">05 世纪大案</div><span class="timeline-arrow">➔</span><div class="timeline-node active">06 终局抉择</div>
+      </div>
+      <div class="game-brand">GRAND THEFT AUTO V / 犯罪现代讽刺经典</div>
+    </div>
+
+    <!-- Hero Title -->
+    <div class="title-area">
+      <div class="eyebrow-tag">TIMELINE 06 / THE THIRD OPTION: DEATHWISH</div>
+      <h1 class="main-title">终局抉择 · 第三种选择：三男一狗大团圆！</h1>
+    </div>
+
+    <!-- Split Content -->
+    <div class="content-split">
+      <div class="logic-column">
+        
+              <div class="logic-box" id="lbox-1">
+                <div class="box-header">
+                  <span class="box-pill" style="background: rgba(249, 115, 22, 0.18); color: #f97316; border: 1px solid rgba(249, 115, 22, 0.4);">【残酷二选一】</span>
+                  <span class="box-title">来自官方与资本的威逼利诱</span>
+                </div>
+                <div class="box-bullets">
+                  
+                  <div class="bullet-item">
+                    <span class="bullet-dot" style="background: #f97316;"></span>
+                    <span>特工海因斯要求处决崔佛，富豪德温逼迫杀死老麦</span>
+                  </div>
+                
+                  <div class="bullet-item">
+                    <span class="bullet-dot" style="background: #f97316;"></span>
+                    <span>体制企图用离间计让三人自相残杀、坐收渔翁之利</span>
+                  </div>
+                
+                </div>
+              </div>
+            
+              <div class="logic-box" id="lbox-2">
+                <div class="box-header">
+                  <span class="box-pill" style="background: rgba(34, 197, 94, 0.18); color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.4);">【老子选C】</span>
+                  <span class="box-title">第三种选择：向死而生！</span>
+                </div>
+                <div class="box-bullets">
+                  
+                  <div class="bullet-item">
+                    <span class="bullet-dot" style="background: #22c55e;"></span>
+                    <span>小富果断拒绝背叛师友，联络莱斯特制定绝地反杀方案</span>
+                  </div>
+                
+                  <div class="bullet-item">
+                    <span class="bullet-dot" style="background: #22c55e;"></span>
+                    <span>三人在钢铁铸造厂背靠背防御，轰碎敌人所有包围圈</span>
+                  </div>
+                
+                </div>
+              </div>
+            
+              <div class="logic-box" id="lbox-3">
+                <div class="box-header">
+                  <span class="box-pill" style="background: rgba(168, 85, 247, 0.18); color: #a855f7; border: 1px solid rgba(168, 85, 247, 0.4);">【全歼仇敌】</span>
+                  <span class="box-title">连人带车推入夕阳深海</span>
+                </div>
+                <div class="box-bullets">
+                  
+                  <div class="bullet-item">
+                    <span class="bullet-dot" style="background: #a855f7;"></span>
+                    <span>兵分三路清算所有幕后黑手，把德温锁在后备箱推落悬崖</span>
+                  </div>
+                
+                  <div class="bullet-item">
+                    <span class="bullet-dot" style="background: #a855f7;"></span>
+                    <span>在夕阳的波光粼粼中并肩大笑，洛圣都传奇永不落幕！</span>
+                  </div>
+                
+                </div>
+              </div>
+            
+      </div>
+
+      <div class="art-column">
+        <div class="art-img-wrap">
+          <img src="assets/images/scene06_ending.jpg" class="art-img" data-layout-allow-overflow data-duration="40.23" alt="洛圣都三叉戟" />
+          <div class="art-gradient-overlay"></div>
+          <div class="art-info-overlay">
+            <span class="art-badge">宁死不当二五仔</span>
+            <h2 class="art-name">洛圣都三叉戟</h2>
+            <p class="art-desc">小富拒绝背叛任何兄弟，三人联手全歼仇敌，书写西海岸传奇。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Subtitle Container -->
+    <div class="caption-container">
+      <div class="caption-box" id="caption-0" style="opacity: 0;">黄金刚分完</div><div class="caption-box" id="caption-1" style="opacity: 0;">小富的手表就响起了催命铃声：FIB高层逼他杀掉不可控的崔佛</div><div class="caption-box" id="caption-2" style="opacity: 0;">紧接着德温又打来电话</div><div class="caption-box" id="caption-3" style="opacity: 0;">威逼他杀掉老麦</div><div class="caption-box" id="caption-4" style="opacity: 0;">杀A还是杀B</div><div class="caption-box" id="caption-5" style="opacity: 0;">小富直接给出了全游戏最硬气的回答：老子选C——宁死不当二五仔</div><div class="caption-box" id="caption-6" style="opacity: 0;">三人立刻在铸造厂集结</div><div class="caption-box" id="caption-7" style="opacity: 0;">联手打退FIB与雇佣军围攻</div><div class="caption-box" id="caption-8" style="opacity: 0;">随后兵分三路精准清算仇敌：做掉史崔奇、暗杀海因斯、枪决陈伟</div><div class="caption-box" id="caption-9" style="opacity: 0;">最后三人合力把被塞进行李箱的德温</div><div class="caption-box" id="caption-10" style="opacity: 0;">从落日悬崖连人带车推入太平洋</div><div class="caption-box" id="caption-11" style="opacity: 0;">兄弟齐心</div><div class="caption-box" id="caption-12" style="opacity: 0;">制霸洛圣都</div>
+    </div>
+  </div>
+
+  <script>
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+    window.__timelines['scene-06'] = tl;
+
+    // Entrance
+    tl.from('.title-area', { y: -30, opacity: 0, duration: 0.8, ease: 'power3.out' }, 0.1);
+    tl.from('.logic-box', { x: -40, opacity: 0, duration: 0.7, stagger: 0.15, ease: 'power2.out' }, 0.3);
+    tl.from('.art-column', { scale: 0.95, opacity: 0, duration: 0.9, ease: 'back.out(1.2)' }, 0.4);
+
+    // Subtitles sequence
+    const clauseDur = 2.94;
+    
+    tl.to('#caption-0', { opacity: 1, y: 0, duration: 0.3 }, 0.50);
+    tl.to('#caption-0', { opacity: 0, y: -10, duration: 0.25 }, 3.34);
+    
+
+    tl.to('#caption-1', { opacity: 1, y: 0, duration: 0.3 }, 3.44);
+    tl.to('#caption-1', { opacity: 0, y: -10, duration: 0.25 }, 6.28);
+    
+
+    tl.to('#caption-2', { opacity: 1, y: 0, duration: 0.3 }, 6.38);
+    tl.to('#caption-2', { opacity: 0, y: -10, duration: 0.25 }, 9.22);
+    
+
+    tl.to('#caption-3', { opacity: 1, y: 0, duration: 0.3 }, 9.32);
+    tl.to('#caption-3', { opacity: 0, y: -10, duration: 0.25 }, 12.16);
+    
+
+    tl.to('#caption-4', { opacity: 1, y: 0, duration: 0.3 }, 12.26);
+    tl.to('#caption-4', { opacity: 0, y: -10, duration: 0.25 }, 15.10);
+    
+
+    tl.to('#caption-5', { opacity: 1, y: 0, duration: 0.3 }, 15.20);
+    tl.to('#caption-5', { opacity: 0, y: -10, duration: 0.25 }, 18.04);
+    
+
+    tl.to('#caption-6', { opacity: 1, y: 0, duration: 0.3 }, 18.14);
+    tl.to('#caption-6', { opacity: 0, y: -10, duration: 0.25 }, 20.99);
+    
+
+    tl.to('#caption-7', { opacity: 1, y: 0, duration: 0.3 }, 21.09);
+    tl.to('#caption-7', { opacity: 0, y: -10, duration: 0.25 }, 23.93);
+    
+
+    tl.to('#caption-8', { opacity: 1, y: 0, duration: 0.3 }, 24.03);
+    tl.to('#caption-8', { opacity: 0, y: -10, duration: 0.25 }, 26.87);
+    
+
+    tl.to('#caption-9', { opacity: 1, y: 0, duration: 0.3 }, 26.97);
+    tl.to('#caption-9', { opacity: 0, y: -10, duration: 0.25 }, 29.81);
+    
+
+    tl.to('#caption-10', { opacity: 1, y: 0, duration: 0.3 }, 29.91);
+    tl.to('#caption-10', { opacity: 0, y: -10, duration: 0.25 }, 32.75);
+    
+
+    tl.to('#caption-11', { opacity: 1, y: 0, duration: 0.3 }, 32.85);
+    tl.to('#caption-11', { opacity: 0, y: -10, duration: 0.25 }, 35.69);
+    
+
+    tl.to('#caption-12', { opacity: 1, y: 0, duration: 0.3 }, 35.79);
+    tl.to('#caption-12', { opacity: 0, y: -10, duration: 0.25 }, 38.63);
+    
+
+    // Keep active until end
+    tl.to({}, { duration: 40.23 }, 0);
+  </script>
+</body>
+</html>

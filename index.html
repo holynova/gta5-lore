@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GTA5：洛圣都三叉戟的爱恨情仇与世纪大劫案 | Hyperframe 史诗剧情解析</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #060b0d;
+      --bg-card: rgba(12, 22, 20, 0.9);
+      --border-color: rgba(34, 197, 94, 0.35);
+      --accent: #22c55e;
+      --accent-sec: #a855f7;
+      --accent-alert: #f97316;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: 'Noto Serif SC', -apple-system, BlinkMacSystemFont, "PingFang SC", serif;
+      line-height: 1.6;
+      background-attachment: fixed;
+      overflow-x: hidden;
+    }
+    .series-nav-bar {
+      background: rgba(10, 14, 22, 0.95);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 12px 20px;
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(12px);
+    }
+    .series-link {
+      color: #94a3b8;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 5px 14px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.2s;
+    }
+    .series-link:hover, .series-link.active {
+      background: var(--accent);
+      color: #000;
+      border-color: var(--accent);
+    }
+    .hero-banner {
+      padding: 50px 20px 24px;
+      text-align: center;
+    }
+    .badge-top {
+      display: inline-block;
+      padding: 5px 18px;
+      border-radius: 30px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      font-size: 13px;
+      letter-spacing: 2.5px;
+      margin-bottom: 16px;
+      font-weight: 800;
+    }
+    .main-title {
+      font-size: clamp(30px, 4.5vw, 52px);
+      font-weight: 900;
+      letter-spacing: 1.5px;
+      line-height: 1.25;
+      margin-bottom: 14px;
+      background: linear-gradient(135deg, #ffffff 30%, var(--accent) 95%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .subtitle {
+      font-size: clamp(15px, 1.8vw, 19px);
+      color: var(--text-muted);
+      max-width: 840px;
+      margin: 0 auto 28px;
+    }
+    .tag-container {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 30px;
+    }
+    .spec-tag {
+      padding: 5px 14px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      font-size: 13px;
+      color: #cbd5e1;
+    }
+    .spec-tag b { color: var(--accent); }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px 80px;
+    }
+    .video-box {
+      background: #000;
+      border: 1.5px solid var(--border-color);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.85);
+      margin-bottom: 30px;
+    }
+    .video-wrapper {
+      position: relative;
+      padding-top: 56.25%;
+    }
+    .video-wrapper video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .player-quickbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 20px;
+      background: rgba(15, 20, 30, 0.95);
+      border-top: 1px solid rgba(255,255,255,0.08);
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .current-chapter-display {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 15px;
+    }
+    .indicator-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 10px var(--accent);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(0.8); opacity: 0.5; }
+    }
+    .current-chapter-name { color: var(--accent); font-weight: 700; }
+    .playback-tools { display: flex; gap: 8px; }
+    .speed-btn {
+      padding: 4px 12px;
+      border-radius: 6px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: #cbd5e1;
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .speed-btn.active {
+      background: var(--accent);
+      color: #000;
+      font-weight: 700;
+      border-color: var(--accent);
+    }
+
+    /* Interactive Timeline Nav */
+    .timeline-nav-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin-bottom: 45px;
+    }
+    .timeline-nav-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 12px 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.2s;
+    }
+    .timeline-nav-card:hover, .timeline-nav-card.active {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+    .tn-index {
+      font-size: 18px;
+      font-weight: 900;
+      color: var(--accent);
+    }
+    .tn-info { flex: 1; overflow: hidden; }
+    .tn-title {
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: #f1f5f9;
+    }
+    .tn-time { font-size: 11px; color: #64748b; }
+
+    /* Section Headings */
+    .section-title {
+      font-size: 26px;
+      font-weight: 900;
+      margin: 40px 0 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .section-title::before {
+      content: '';
+      display: inline-block;
+      width: 4px;
+      height: 24px;
+      background: var(--accent);
+      border-radius: 2px;
+      box-shadow: 0 0 10px var(--accent);
+    }
+
+    /* Causal Cards List */
+    .causal-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin-bottom: 45px;
+    }
+    .causal-scene-card {
+      background: var(--bg-card);
+      border: 1.5px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 24px;
+      transition: all 0.25s;
+    }
+    .causal-scene-card:hover {
+      border-color: var(--accent);
+    }
+    .csc-header { margin-bottom: 18px; }
+    .csc-meta { display: flex; gap: 10px; align-items: center; margin-bottom: 6px; }
+    .csc-step {
+      font-size: 12px;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: rgba(255,255,255,0.1);
+      color: var(--accent);
+    }
+    .csc-time-tag { font-size: 12px; color: #64748b; }
+    .csc-title { font-size: 22px; font-weight: 900; color: #f8fafc; margin-bottom: 8px; }
+    .csc-narration { font-size: 15px; color: var(--text-muted); font-style: italic; line-height: 1.5; }
+    .csc-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+    }
+    .causal-box {
+      background: rgba(8, 12, 18, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 14px 16px;
+    }
+    .c-pill {
+      font-size: 12px;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 4px;
+      display: inline-block;
+      margin-bottom: 8px;
+    }
+    .c-title { font-size: 17px; font-weight: 800; color: #ffffff; margin-bottom: 8px; }
+    .c-bullets { list-style: none; padding-left: 0; }
+    .c-bullets li {
+      font-size: 14px;
+      color: #cbd5e1;
+      margin-bottom: 5px;
+      position: relative;
+      padding-left: 14px;
+    }
+    .c-bullets li::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-size: 16px;
+      line-height: 1;
+    }
+
+    /* Character Dossier */
+    .char-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin-bottom: 60px;
+    }
+    .char-card {
+      background: var(--bg-card);
+      border: 1.5px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: all 0.25s;
+    }
+    .char-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-3px);
+    }
+    .char-img-wrap {
+      position: relative;
+      height: 220px;
+      overflow: hidden;
+    }
+    .char-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .char-badge {
+      position: absolute;
+      bottom: 12px;
+      left: 12px;
+      background: rgba(0,0,0,0.8);
+      border: 1px solid;
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .char-body { padding: 18px 20px; }
+    .char-name { font-size: 20px; font-weight: 900; color: #ffffff; margin-bottom: 6px; }
+    .char-desc { font-size: 14px; color: var(--text-muted); line-height: 1.45; }
+
+    .footer {
+      text-align: center;
+      padding: 40px 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      color: #64748b;
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Global Series Bar -->
+  <div class="series-nav-bar">
+    <a href="https://holynova.github.io/elden-ring-lore/" class="series-link">艾尔登法环</a><a href="https://holynova.github.io/cyberpunk-2077-lore/" class="series-link">赛博朋克2077</a><a href="https://holynova.github.io/rdr2-lore/" class="series-link">荒野大镖客2</a><a href="https://holynova.github.io/gta5-lore/" class="series-link active">GTA5</a><a href="https://holynova.github.io/witcher-3-lore/" class="series-link">巫师三</a><a href="https://holynova.github.io/dark-souls-3-lore/" class="series-link">黑暗之魂3</a>
+  </div>
+
+  <!-- Hero Header -->
+  <header class="hero-banner">
+    <div class="badge-top">GRAND THEFT AUTO V / 犯罪现代讽刺经典</div>
+    <h1 class="main-title">GTA5：洛圣都三叉戟的爱恨情仇与世纪大劫案</h1>
+    <p class="subtitle">从北杨克顿假死、三男意外聚首，到4吨黄金世纪劫案与第三种选择</p>
+    <div class="tag-container">
+      <div class="spec-tag">视频规格：<b>1080P 60FPS 超清</b></div>
+      <div class="spec-tag">音频体验：<b>双声道定制氛围 BGM</b></div>
+      <div class="spec-tag">叙事风格：<b>慷慨激昂 / 说人话因果闭环</b></div>
+      <div class="spec-tag">视觉呈现：<b>极简大字 / 严密时间线 / 绝对无进度条</b></div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Cinema Video Box -->
+    <div class="video-box">
+      <div class="video-wrapper">
+        <video id="mainVideo" controls poster="assets/images/hero_gta5.jpg">
+          <source src="gta5_lore.mp4" type="video/mp4">
+          您的浏览器暂不支持 HTML5 视频播放。
+        </video>
+      </div>
+      <div class="player-quickbar">
+        <div class="current-chapter-display">
+          <div class="indicator-dot"></div>
+          <span>当前解析：<b class="current-chapter-name" id="curChapterName">罪恶前因 · 北杨克顿背叛与假死隐退</b></span>
+        </div>
+        <div class="playback-tools">
+          <button class="speed-btn active" onclick="setSpeed(1.0, this)">1.0x</button>
+          <button class="speed-btn" onclick="setSpeed(1.25, this)">1.25x</button>
+          <button class="speed-btn" onclick="setSpeed(1.5, this)">1.5x</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Timeline Nav Bar -->
+    <div class="timeline-nav-grid">
+      
+          <div class="timeline-nav-card" onclick="jumpToChapter(0.0, 1)">
+            <div class="tn-index">01</div>
+            <div class="tn-info">
+              <div class="tn-title">罪恶前因 · 北杨克顿背叛与假死隐退</div>
+              <div class="tn-time">00:00</div>
+            </div>
+          </div>
+        
+          <div class="timeline-nav-card" onclick="jumpToChapter(39.8, 2)">
+            <div class="tn-index">02</div>
+            <div class="tn-info">
+              <div class="tn-title">命运交汇 · 偷车青年与重出江湖</div>
+              <div class="tn-time">00:39</div>
+            </div>
+          </div>
+        
+          <div class="timeline-nav-card" onclick="jumpToChapter(78.2, 3)">
+            <div class="tn-index">03</div>
+            <div class="tn-info">
+              <div class="tn-title">疯狗入局 · 崔佛识破老友金蝉脱壳</div>
+              <div class="tn-time">01:18</div>
+            </div>
+          </div>
+        
+          <div class="timeline-nav-card" onclick="jumpToChapter(115.6, 4)">
+            <div class="tn-index">04</div>
+            <div class="tn-info">
+              <div class="tn-title">四面楚歌 · 特工要挟与资本压榨</div>
+              <div class="tn-time">01:55</div>
+            </div>
+          </div>
+        
+          <div class="timeline-nav-card" onclick="jumpToChapter(153.0, 5)">
+            <div class="tn-index">05</div>
+            <div class="tn-info">
+              <div class="tn-title">世纪大案 · 联合储蓄4吨黄金大劫案</div>
+              <div class="tn-time">02:33</div>
+            </div>
+          </div>
+        
+          <div class="timeline-nav-card" onclick="jumpToChapter(190.9, 6)">
+            <div class="tn-index">06</div>
+            <div class="tn-info">
+              <div class="tn-title">终局抉择 · 第三种选择：三男一狗大团圆！</div>
+              <div class="tn-time">03:10</div>
+            </div>
+          </div>
+        
+    </div>
+
+    <!-- Section 1: Causal Logic Full Map -->
+    <h2 class="section-title">六幕剧情前因后果全景因果链</h2>
+    <div class="causal-list">
+      
+          <div class="causal-scene-card" id="scene-card-1">
+            <div class="csc-header">
+              <div class="csc-meta">
+                <span class="csc-step">STAGE 01</span>
+                <span class="csc-time-tag">00:00</span>
+              </div>
+              <h3 class="csc-title">罪恶前因 · 北杨克顿背叛与假死隐退</h3>
+              <p class="csc-narration">"玩GTA5如果只顾着开车兜风，那可就太亏了，三个主角的爱恨因果其实极其狗血精彩！一切故事的大前因，发生在2004年的北杨克顿！老麦迈克尔当时厌倦了亡命天涯，为了老婆孩子，背地里跟FIB特工戴夫做了肮脏交易：故意搞砸一场银行劫案！结果同伙布拉德替死中枪被埋，疯子崔佛开枪拼杀逃入雪原，而老麦则假死脱身，进入证人保护计划，住进洛圣都千万豪宅！他以为自己彻底洗白了，殊不知纸永远包不住火！"</p>
+            </div>
+            <div class="csc-grid">
+              
+              <div class="causal-box">
+                <span class="c-pill" style="background: rgba(34, 197, 94, 0.16); color: #22c55e;">【肮脏交易】</span>
+                <h4 class="c-title">勾结特工出卖兄弟</h4>
+                <ul class="c-bullets">
+                  <li>老麦为了家庭安稳，私下联络FIB探员戴夫做局</li><li>借假死之名脱离犯罪泥潭，换取全家合法身份保护</li>
+                </ul>
+              </div>
+            
+              <div class="causal-box">
+                <span class="c-pill" style="background: rgba(249, 115, 22, 0.16); color: #f97316;">【雪原血案】</span>
+                <h4 class="c-title">假戏真做横生意外</h4>
+                <ul class="c-bullets">
+                  <li>埋伏狙击手一枪打死同伙布拉德，老麦中枪倒地装死</li><li>崔佛孤身一人在警匪交火中含泪逃亡，心碎隐姓埋名</li>
+                </ul>
+              </div>
+            
+              <div class="causal-box">
+                <span class="c-pill" style="background: rgba(168, 85, 247, 0.16); color: #a855f7;">【豪宅隐居】</span>
+                <h4 class="c-title">洛圣都中年危机困局</h4>
+                <ul class="c-bullets">
+                  <li>住进比佛利风格豪宅，但夫妻反目、儿女叛逆啃老</li><li>每天借酒浇愁看老电影，内心深处的大盗本能蠢蠢欲动</li>
+                </ul>
+              </div>
+            
+            </div>
+          </div>
+        
+          <div class="causal-scene-card" id="scene-card-2">
+            <div class="csc-header">
+              <div class="csc-meta">
+                <span class="csc-step">STAGE 02</span>
+                <span class="csc-time-tag">00:39</span>
+              </div>
+              <h3 class="csc-title">命运交汇 · 偷车青年与重出江湖</h3>
+              <p class="csc-narration">"命运的齿轮从一个不起眼的偷车委托开始转动！贫民窟小年轻富兰克林帮车行老板去麦克豪宅收车，不料被后座上的老麦拿枪顶住了后脑勺！老麦欣赏这小伙子的胆识与车技，两人一见如故成了师徒！然而好景不长，老麦撞破妻子跟网球教练偷情，暴怒之下开车拉垮了一栋悬崖豪宅，结果那竟是墨西哥大毒枭马德拉索的情妇家！面对两百五十万美元的索命巨债，老麦只能带上小富，重操旧业去抢劫顶级珠宝店！"</p>
+            </div>
+            <div class="csc-grid">
+              
+              <div class="causal-box">
+                <span class="c-pill" style="background: rgba(168, 85, 247, 0.16); color: #a855f7;">【偷车交锋】</span>
+                <h4 class="c-title">后座拔枪的不打不相识</h4>
+                <ul class="c-bullets">
+                  <li>小富潜入豪宅收缴逾期跑车，被藏在后座的老麦用枪指头</li><li>老麦看重小富的沉稳机灵与驾驶天赋，收为关门弟子</li>
+                </ul>
+              </div>
+            
+              <div class="causal-box">
+                <span class="c-pill" style="background: rgba(249, 115, 22, 0.16); color: #f97316;">【怒拆豪宅】</span>
+                <h4 class="c-title">惹毛墨西哥顶级大毒枭</h4>
+                <ul class="c-bullets">
+                  <li>撞破妻子偷情，开车野蛮拉垮网球教练所在的悬崖豪宅</li><li>豪宅主人实为心狠手辣的大毒枭马德拉索，勒索250万</li>
+                </ul>
+              </div>
+            
+              <div class="causal-box">
+                <span class="c-pill" style="background: rgba(34, 197, 94, 0.16); color: #22c55e;">【重出江湖】</span>
+                <h4 class="c-title">策划突袭顶级珠宝店</h4>
+                <ul class="c-bullets">
+                  <li>为了还清天价债务，老麦联系旧相识莱斯特精心策划</li><li>小富加入团队担任车手，一记响亮的劫案惊动全美</li>
+                </ul>
+              </div>
+            
+            </div>
+          </div>
+        
+          <div class="causal-scene-card" id="scene-card-3">
+            <div class="csc-header">
+              <div class="csc-meta">
+                <span class="csc-step">STAGE 03</span>
+                <span class="csc-time-tag">01:18</span>
+              </div>
+              <h3 class="csc-title">疯狗入局 · 崔佛识破老友金蝉脱壳</h3>
+              <p class="csc-narration">"珠宝店大劫案虽然赚翻了，但老麦逃跑时顺口说了一句当年的标志性台词：“你每天忘记一千件事，为什么不把这件事也忘了？”！这句话通过电视新闻，直接传到了沙漠拖车营地里！正跟飞车党厮混的疯子崔佛听到这句话当场五雷轰顶：这他妈是迈克尔的口头禅！迈克尔根本没死！暴怒与被欺骗的痛苦瞬间吞噬了崔佛，他狂暴灭掉整个失落摩托车帮，一路飙车杀进洛圣都，当面跟老麦当面对质！"</p>
+            </div>
+            <div class="csc-grid">
+              
+              <div class="causal-box">
+                <span class="c-pill" style="background: rgba(34, 197, 94, 0.16); color: #22c55e;">【名言暴露】</span>
+                <h4 class="c-title">招牌口头禅引火烧身</h4>
+                <ul class="c-bullets">
+                  <li>老麦对保安脱口而出：“你每天忘记一千件事……”</li><li>被各大电视台反复滚动播放，成为破绽百出的指纹</li>
+                </ul>
+              </div>
+            
+              <div class="causal-box">
+                <span class="c-pill" style="background: rgba(249, 115, 22, 0.16); color: #f97316;">【疯狗狂怒】</span>
+                <h4 class="c-title">崔佛得知老兄诈死真相</h4>
+                <ul class="c-bullets">
+                  <li>悼念了九年的挚友居然活蹦乱跳，自己像个纯种傻子</li><li>手撕飞车党老大强尼，横扫沙漠军火商一路杀向洛圣都</li>
+                </ul>
+              </div>
+            
+              <div class="causal-box">
+                <span class="c-pill" style="background: rgba(168, 85, 247, 0.16); color: #a855f7;">【旧友重聚】</span>
+                <h4 class="c-title">三叉戟组合正式成型</h4>
+                <ul class="c-bullets">
+                  <li>踹开老麦豪宅大门当面对峙，揭开陈年旧账的伤疤</li><li>小富在中间劝架调和，极具破坏力的三人团队被迫拼盘</li>
+                </ul>
+              </div>
+            
+            </div>
+          </div>
+        
+          <div class="causal-scene-card" id="scene-card-4">
+            <div class="csc-header">
+              <div class="csc-meta">
+                <span class="csc-step">STAGE 04</span>
+                <span class="csc-time-tag">01:55</span>
+              </div>
+              <h3 class="csc-title">四面楚歌 · 特工要挟与资本压榨</h3>
+              <p class="csc-narration">"三个人聚在一起不仅没过上好日子，反而陷入了四面楚歌的灭顶之灾！老麦的复出引来了老搭档FIB特工戴夫，戴夫的上司海因斯更是拿老麦的黑历史当把柄，逼他们抢劫IAA生化实验室、甚至火烧FIB大楼替自己洗清贪污罪证！更恶心的是亿万富翁德温·维斯顿，哄骗他们去偷价值连城的顶级超跑，事后却一分钱不给！官方特工黑吃黑，资本大鳄吃干抹净，三人组成了各方势力随时准备灭口的安全套！"</p>
+            </div>
+            <div class="csc-grid">
+              
+              <div class="causal-box">
+                <span class="c-pill" style="background: rgba(249, 115, 22, 0.16); color: #f97316;">【特工勒索】</span>
+                <h4 class="c-title">FIB内部斗争的人肉黑手套</h4>
+                <ul class="c-bullets">
+                  <li>海因斯用档案要挟老麦，强迫三人突袭敌对情报机关IAA</li><li>从潜水突袭生化实验室到火线潜入FIB大楼删数据</li>
+                </ul>
+              </div>
+            
+              <div class="causal-box">
+                <span class="c-pill" style="background: rgba(34, 197, 94, 0.16); color: #22c55e;">【资本白嫖】</span>
+                <h4 class="c-title">德温维斯顿极度贪婪傲慢</h4>
+                <ul class="c-bullets">
+                  <li>承诺高额报酬诱骗三人偷运稀世超跑，事后直接赖账</li><li>动用梅利威瑟雇佣军围攻老麦豪宅，企图杀害老麦妻女</li>
+                </ul>
+              </div>
+            
+              <div class="causal-box">
+                <span class="c-pill" style="background: rgba(168, 85, 247, 0.16); color: #a855f7;">【忍无可忍】</span>
+                <h4 class="c-title">莱斯特提出终极反杀大案</h4>
+                <ul class="c-bullets">
+                  <li>既然到处被当枪使，不如破釜沉舟干一票世界纪录级别的案子</li><li>将目光投向洛圣都安保最严密的终极目标：联合储蓄！</li>
+                </ul>
+              </div>
+            
+            </div>
+          </div>
+        
+          <div class="causal-scene-card" id="scene-card-5">
+            <div class="csc-header">
+              <div class="csc-meta">
+                <span class="csc-step">STAGE 05</span>
+                <span class="csc-time-tag">02:33</span>
+              </div>
+              <h3 class="csc-title">世纪大案 · 联合储蓄4吨黄金大劫案</h3>
+              <p class="csc-narration">"为了彻底翻盘，三人组抛下所有个人恩怨，在军师莱斯特的指挥下，发起了整个犯罪史上最疯狂的行动——“联合储蓄大劫案”！调动巨型地下盾构机挖穿金库防线，在全城最高警报下拉出整整四吨重、价值两亿多美元的纯金金条！小富开着重型改转车疯狂狂飙，崔佛开着双旋翼直升机在火车上空精准吊运，老麦手持火神炮压制整整三个街区的防暴警察！四吨黄金到手，全员实现两亿美元的财富自由！"</p>
+            </div>
+            <div class="csc-grid">
+              
+              <div class="causal-box">
+                <span class="c-pill" style="background: rgba(34, 197, 94, 0.16); color: #22c55e;">【周密部署】</span>
+                <h4 class="c-title">盾构机钻开金库绝对防御</h4>
+                <ul class="c-bullets">
+                  <li>地下钻孔引爆金库后壁，闪电战攻破号称坚不可摧的安保</li><li>在数百名全副武装的特警合围前，将4吨金条打包挂钩</li>
+                </ul>
+              </div>
+            
+              <div class="causal-box">
+                <span class="c-pill" style="background: rgba(168, 85, 247, 0.16); color: #a855f7;">【极限空运】</span>
+                <h4 class="c-title">直升机与飞车完美配合</h4>
+                <ul class="c-bullets">
+                  <li>小富率领车队在洛圣都高速隧道进行极速烟幕甩尾突围</li><li>崔佛高空驾驶大型运输直升机，把金条精准空投到火车上</li>
+                </ul>
+              </div>
+            
+              <div class="causal-box">
+                <span class="c-pill" style="background: rgba(249, 115, 22, 0.16); color: #f97316;">【财富自由】</span>
+                <h4 class="c-title">两亿美元终极狂欢分赃</h4>
+                <ul class="c-bullets">
+                  <li>每人分到数千万美元巨款，彻底改变人生阶级</li><li>但也彻底把背后的FIB政客与资本家逼到了狗急跳墙的绝境！</li>
+                </ul>
+              </div>
+            
+            </div>
+          </div>
+        
+          <div class="causal-scene-card" id="scene-card-6">
+            <div class="csc-header">
+              <div class="csc-meta">
+                <span class="csc-step">STAGE 06</span>
+                <span class="csc-time-tag">03:10</span>
+              </div>
+              <h3 class="csc-title">终局抉择 · 第三种选择：三男一狗大团圆！</h3>
+              <p class="csc-narration">"黄金刚分完，小富的手表就响起了催命铃声：FIB高层逼他杀掉不可控的崔佛；紧接着德温又打来电话，威逼他杀掉老麦！杀A还是杀B？小富直接给出了全游戏最硬气的回答：老子选C——宁死不当二五仔！三人立刻在铸造厂集结，联手打退FIB与雇佣军围攻，随后兵分三路精准清算仇敌：做掉史崔奇、暗杀海因斯、枪决陈伟，最后三人合力把被塞进行李箱的德温，从落日悬崖连人带车推入太平洋！兄弟齐心，制霸洛圣都！"</p>
+            </div>
+            <div class="csc-grid">
+              
+              <div class="causal-box">
+                <span class="c-pill" style="background: rgba(249, 115, 22, 0.16); color: #f97316;">【残酷二选一】</span>
+                <h4 class="c-title">来自官方与资本的威逼利诱</h4>
+                <ul class="c-bullets">
+                  <li>特工海因斯要求处决崔佛，富豪德温逼迫杀死老麦</li><li>体制企图用离间计让三人自相残杀、坐收渔翁之利</li>
+                </ul>
+              </div>
+            
+              <div class="causal-box">
+                <span class="c-pill" style="background: rgba(34, 197, 94, 0.16); color: #22c55e;">【老子选C】</span>
+                <h4 class="c-title">第三种选择：向死而生！</h4>
+                <ul class="c-bullets">
+                  <li>小富果断拒绝背叛师友，联络莱斯特制定绝地反杀方案</li><li>三人在钢铁铸造厂背靠背防御，轰碎敌人所有包围圈</li>
+                </ul>
+              </div>
+            
+              <div class="causal-box">
+                <span class="c-pill" style="background: rgba(168, 85, 247, 0.16); color: #a855f7;">【全歼仇敌】</span>
+                <h4 class="c-title">连人带车推入夕阳深海</h4>
+                <ul class="c-bullets">
+                  <li>兵分三路清算所有幕后黑手，把德温锁在后备箱推落悬崖</li><li>在夕阳的波光粼粼中并肩大笑，洛圣都传奇永不落幕！</li>
+                </ul>
+              </div>
+            
+            </div>
+          </div>
+        
+    </div>
+
+    <!-- Section 2: Character Dossier -->
+    <h2 class="section-title">关键人物与核心场景档案</h2>
+    <div class="char-grid">
+      
+          <div class="char-card">
+            <div class="char-img-wrap">
+              <img src="assets/images/scene01_michael.jpg" alt="迈克尔·迪圣塔" class="char-img" />
+              <div class="char-badge" style="border-color: #22c55e; color: #22c55e;">退役大盗</div>
+            </div>
+            <div class="char-body">
+              <h4 class="char-name">迈克尔·迪圣塔</h4>
+              <p class="char-desc">为了家庭与FIB暗中做局的中年危机大盗，隐居洛圣都豪宅。</p>
+            </div>
+          </div>
+        
+          <div class="char-card">
+            <div class="char-img-wrap">
+              <img src="assets/images/scene02_franklin.jpg" alt="富兰克林·克林顿" class="char-img" />
+              <div class="char-badge" style="border-color: #22c55e; color: #22c55e;">街头新星</div>
+            </div>
+            <div class="char-body">
+              <h4 class="char-name">富兰克林·克林顿</h4>
+              <p class="char-desc">机智冷静有抱负的年轻车手，一心想摆脱帮派混混底层命运。</p>
+            </div>
+          </div>
+        
+          <div class="char-card">
+            <div class="char-img-wrap">
+              <img src="assets/images/scene03_trevor.jpg" alt="崔佛·菲利普" class="char-img" />
+              <div class="char-badge" style="border-color: #22c55e; color: #22c55e;">沙漠狂人</div>
+            </div>
+            <div class="char-body">
+              <h4 class="char-name">崔佛·菲利普</h4>
+              <p class="char-desc">暴力纯粹却极度重义气的疯子，开着皮卡杀进洛圣都的暴风雨。</p>
+            </div>
+          </div>
+        
+          <div class="char-card">
+            <div class="char-img-wrap">
+              <img src="assets/images/scene04_heist.jpg" alt="德温 & FIB黑手" class="char-img" />
+              <div class="char-badge" style="border-color: #22c55e; color: #22c55e;">幕后黑手</div>
+            </div>
+            <div class="char-body">
+              <h4 class="char-name">德温 & FIB黑手</h4>
+              <p class="char-desc">把三人组当成随时可丢弃的黑手套，极尽贪婪与欺压之能事。</p>
+            </div>
+          </div>
+        
+          <div class="char-card">
+            <div class="char-img-wrap">
+              <img src="assets/images/scene05_bigscore.jpg" alt="联合储蓄世纪大案" class="char-img" />
+              <div class="char-badge" style="border-color: #22c55e; color: #22c55e;">两亿美金</div>
+            </div>
+            <div class="char-body">
+              <h4 class="char-name">联合储蓄世纪大案</h4>
+              <p class="char-desc">运走整整四吨金条，整个犯罪史上绝无仅有的神级完美行动。</p>
+            </div>
+          </div>
+        
+          <div class="char-card">
+            <div class="char-img-wrap">
+              <img src="assets/images/scene06_ending.jpg" alt="洛圣都三叉戟" class="char-img" />
+              <div class="char-badge" style="border-color: #22c55e; color: #22c55e;">宁死不当二五仔</div>
+            </div>
+            <div class="char-body">
+              <h4 class="char-name">洛圣都三叉戟</h4>
+              <p class="char-desc">小富拒绝背叛任何兄弟，三人联手全歼仇敌，书写西海岸传奇。</p>
+            </div>
+          </div>
+        
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>Hyperframe Video & Visual Knowledge Lab · 基于因果逻辑与高阶视觉合成构建</p>
+  </footer>
+
+  <script>
+    const video = document.getElementById('mainVideo');
+    const timestamps = [0.0, 39.8, 78.16, 115.63, 153.01, 190.91];
+    const sceneTitles = ["\u7f6a\u6076\u524d\u56e0 \u00b7 \u5317\u6768\u514b\u987f\u80cc\u53db\u4e0e\u5047\u6b7b\u9690\u9000", "\u547d\u8fd0\u4ea4\u6c47 \u00b7 \u5077\u8f66\u9752\u5e74\u4e0e\u91cd\u51fa\u6c5f\u6e56", "\u75af\u72d7\u5165\u5c40 \u00b7 \u5d14\u4f5b\u8bc6\u7834\u8001\u53cb\u91d1\u8749\u8131\u58f3", "\u56db\u9762\u695a\u6b4c \u00b7 \u7279\u5de5\u8981\u631f\u4e0e\u8d44\u672c\u538b\u69a8", "\u4e16\u7eaa\u5927\u6848 \u00b7 \u8054\u5408\u50a8\u84c44\u5428\u9ec4\u91d1\u5927\u52ab\u6848", "\u7ec8\u5c40\u6289\u62e9 \u00b7 \u7b2c\u4e09\u79cd\u9009\u62e9\uff1a\u4e09\u7537\u4e00\u72d7\u5927\u56e2\u5706\uff01"];
+
+    function jumpToChapter(seconds, idx) {
+      video.currentTime = seconds;
+      video.play();
+      updateChapterUI(idx - 1);
+    }
+
+    function setSpeed(speed, btn) {
+      video.playbackRate = speed;
+      document.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+
+    function updateChapterUI(idx) {
+      document.getElementById('curChapterName').innerText = sceneTitles[idx];
+      document.querySelectorAll('.timeline-nav-card').forEach((c, i) => {
+        if (i === idx) c.classList.add('active');
+        else c.classList.remove('active');
+      });
+    }
+
+    video.addEventListener('timeupdate', () => {
+      const t = video.currentTime;
+      let activeIdx = 0;
+      for (let i = 0; i < timestamps.length; i++) {
+        if (t >= timestamps[i]) activeIdx = i;
+      }
+      updateChapterUI(activeIdx);
+    });
+  </script>
+</body>
+</html>

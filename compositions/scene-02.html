@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <script src="assets/gsap.min.js"></script>
+  <style>
+    @font-face {
+      font-family: LabChinese;
+      src: url('assets/PingFang.ttc');
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    #root {
+      position: absolute;
+      inset: 0;
+      background: #060b0d;
+      color: #f1f5f9;
+      font-family: LabChinese, -apple-system, sans-serif;
+      overflow: hidden;
+    }
+    .bg-wrap {
+      position: absolute;
+      inset: 0;
+      background: url('assets/images/scene02_franklin.jpg') center/cover no-repeat;
+      opacity: 0.32;
+      filter: brightness(0.7) contrast(1.2) saturate(1.1);
+    }
+    .bg-overlay {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 35%, rgba(6,8,13,0.3) 0%, rgba(5,6,9,0.92) 80%);
+    }
+    .ambient-glow {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 90%, rgba(245, 158, 11, 0.08) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    /* Global Timeline Rail */
+    .timeline-rail {
+      position: absolute;
+      left: 70px;
+      right: 70px;
+      top: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 15;
+    }
+    .timeline-steps {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .timeline-node {
+      padding: 5px 12px;
+      border-radius: 18px;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      background: rgba(255, 255, 255, 0.06);
+      color: #64748b;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .timeline-node.active {
+      background: rgba(255, 255, 255, 0.15);
+      color: #22c55e;
+      border-color: #22c55e;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+    }
+    .timeline-arrow {
+      color: #475569;
+      font-size: 13px;
+    }
+    .game-brand {
+      font-size: 16px;
+      color: #94a3b8;
+      letter-spacing: 2px;
+      font-weight: 700;
+    }
+
+    /* Hero Title Area */
+    .title-area {
+      position: absolute;
+      left: 70px;
+      right: 70px;
+      top: 86px;
+      z-index: 10;
+    }
+    .eyebrow-tag {
+      display: inline-block;
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 2.5px;
+      color: #22c55e;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+    .main-title {
+      font-size: 46px;
+      font-weight: 900;
+      line-height: 1.18;
+      margin: 0;
+      letter-spacing: 2px;
+      background: linear-gradient(135deg, #ffffff 30%, #22c55e 90%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 4px 15px rgba(0,0,0,0.8));
+    }
+
+    /* Split Content */
+    .content-split {
+      position: absolute;
+      left: 70px;
+      right: 70px;
+      top: 195px;
+      bottom: 110px;
+      display: flex;
+      gap: 32px;
+      z-index: 10;
+    }
+
+    /* Left Column */
+    .logic-column {
+      flex: 1.15;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 14px;
+    }
+    .logic-box {
+      background: rgba(12, 22, 20, 0.9);
+      border: 1.5px solid rgba(255, 255, 255, 0.1);
+      border-radius: 14px;
+      padding: 18px 22px;
+      backdrop-filter: blur(14px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    }
+    .box-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+    .box-pill {
+      font-size: 13px;
+      font-weight: 800;
+      padding: 3px 9px;
+      border-radius: 6px;
+      letter-spacing: 1px;
+    }
+    .box-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: #f8fafc;
+      letter-spacing: 1px;
+    }
+    .box-bullets {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .bullet-item {
+      font-size: 17px;
+      line-height: 1.45;
+      color: #cbd5e1;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .bullet-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      margin-top: 9px;
+      flex-shrink: 0;
+    }
+
+    /* Right Column: Character / Scene Card */
+    .art-column {
+      flex: 0.85;
+      position: relative;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 2px solid rgba(34, 197, 94, 0.35);
+      background: #0d111a;
+      box-shadow: 0 20px 45px rgba(0,0,0,0.8);
+    }
+    .art-img-wrap {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+    .art-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+    .art-gradient-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(6,8,13,0.1) 40%, rgba(6,8,13,0.95) 100%);
+    }
+    .art-info-overlay {
+      position: absolute;
+      left: 22px;
+      right: 22px;
+      bottom: 22px;
+      z-index: 5;
+    }
+    .art-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid #22c55e;
+      color: #22c55e;
+      margin-bottom: 6px;
+    }
+    .art-name {
+      font-size: 30px;
+      font-weight: 900;
+      color: #ffffff;
+      margin: 0 0 4px 0;
+      letter-spacing: 1.5px;
+      text-shadow: 0 3px 10px rgba(0,0,0,0.8);
+    }
+    .art-desc {
+      font-size: 16px;
+      color: #cbd5e1;
+      line-height: 1.4;
+      margin: 0;
+    }
+
+    /* Bottom Floating Subtitle (No Progress Bar!) */
+    .caption-container {
+      position: absolute;
+      left: 70px;
+      right: 70px;
+      bottom: 24px;
+      height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 25;
+    }
+    .caption-box {
+      position: absolute;
+      background: rgba(8, 11, 18, 0.94);
+      backdrop-filter: blur(16px);
+      border: 1.5px solid rgba(34, 197, 94, 0.35);
+      padding: 12px 40px;
+      border-radius: 36px;
+      font-size: 26px;
+      font-weight: 700;
+      color: #ffffff;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.85);
+      text-align: center;
+      white-space: nowrap;
+      letter-spacing: 1px;
+    }
+  </style>
+</head>
+<body>
+  <div id="root" data-composition-id="scene-02" data-start="0" data-duration="38.36" data-width="1920" data-height="1080">
+    <div class="bg-wrap">
+      <div class="bg-overlay"></div>
+      <div class="ambient-glow"></div>
+    </div>
+
+    <!-- Timeline Rail -->
+    <div class="timeline-rail">
+      <div class="timeline-steps">
+        <div class="timeline-node">01 罪恶前因</div><span class="timeline-arrow">➔</span><div class="timeline-node active">02 命运交汇</div><span class="timeline-arrow">➔</span><div class="timeline-node">03 疯狗入局</div><span class="timeline-arrow">➔</span><div class="timeline-node">04 四面楚歌</div><span class="timeline-arrow">➔</span><div class="timeline-node">05 世纪大案</div><span class="timeline-arrow">➔</span><div class="timeline-node">06 终局抉择</div>
+      </div>
+      <div class="game-brand">GRAND THEFT AUTO V / 犯罪现代讽刺经典</div>
+    </div>
+
+    <!-- Hero Title -->
+    <div class="title-area">
+      <div class="eyebrow-tag">TIMELINE 02 / FRANKLIN MEETS MICHAEL</div>
+      <h1 class="main-title">命运交汇 · 偷车青年与重出江湖</h1>
+    </div>
+
+    <!-- Split Content -->
+    <div class="content-split">
+      <div class="logic-column">
+        
+              <div class="logic-box" id="lbox-1">
+                <div class="box-header">
+                  <span class="box-pill" style="background: rgba(168, 85, 247, 0.18); color: #a855f7; border: 1px solid rgba(168, 85, 247, 0.4);">【偷车交锋】</span>
+                  <span class="box-title">后座拔枪的不打不相识</span>
+                </div>
+                <div class="box-bullets">
+                  
+                  <div class="bullet-item">
+                    <span class="bullet-dot" style="background: #a855f7;"></span>
+                    <span>小富潜入豪宅收缴逾期跑车，被藏在后座的老麦用枪指头</span>
+                  </div>
+                
+                  <div class="bullet-item">
+                    <span class="bullet-dot" style="background: #a855f7;"></span>
+                    <span>老麦看重小富的沉稳机灵与驾驶天赋，收为关门弟子</span>
+                  </div>
+                
+                </div>
+              </div>
+            
+              <div class="logic-box" id="lbox-2">
+                <div class="box-header">
+                  <span class="box-pill" style="background: rgba(249, 115, 22, 0.18); color: #f97316; border: 1px solid rgba(249, 115, 22, 0.4);">【怒拆豪宅】</span>
+                  <span class="box-title">惹毛墨西哥顶级大毒枭</span>
+                </div>
+                <div class="box-bullets">
+                  
+                  <div class="bullet-item">
+                    <span class="bullet-dot" style="background: #f97316;"></span>
+                    <span>撞破妻子偷情，开车野蛮拉垮网球教练所在的悬崖豪宅</span>
+                  </div>
+                
+                  <div class="bullet-item">
+                    <span class="bullet-dot" style="background: #f97316;"></span>
+                    <span>豪宅主人实为心狠手辣的大毒枭马德拉索，勒索250万</span>
+                  </div>
+                
+                </div>
+              </div>
+            
+              <div class="logic-box" id="lbox-3">
+                <div class="box-header">
+                  <span class="box-pill" style="background: rgba(34, 197, 94, 0.18); color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.4);">【重出江湖】</span>
+                  <span class="box-title">策划突袭顶级珠宝店</span>
+                </div>
+                <div class="box-bullets">
+                  
+                  <div class="bullet-item">
+                    <span class="bullet-dot" style="background: #22c55e;"></span>
+                    <span>为了还清天价债务，老麦联系旧相识莱斯特精心策划</span>
+                  </div>
+                
+                  <div class="bullet-item">
+                    <span class="bullet-dot" style="background: #22c55e;"></span>
+                    <span>小富加入团队担任车手，一记响亮的劫案惊动全美</span>
+                  </div>
+                
+                </div>
+              </div>
+            
+      </div>
+
+      <div class="art-column">
+        <div class="art-img-wrap">
+          <img src="assets/images/scene02_franklin.jpg" class="art-img" data-layout-allow-overflow data-duration="38.36" alt="富兰克林·克林顿" />
+          <div class="art-gradient-overlay"></div>
+          <div class="art-info-overlay">
+            <span class="art-badge">街头新星</span>
+            <h2 class="art-name">富兰克林·克林顿</h2>
+            <p class="art-desc">机智冷静有抱负的年轻车手，一心想摆脱帮派混混底层命运。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Subtitle Container -->
+    <div class="caption-container">
+      <div class="caption-box" id="caption-0" style="opacity: 0;">命运的齿轮从一个不起眼的偷车委托开始转动</div><div class="caption-box" id="caption-1" style="opacity: 0;">贫民窟小年轻富兰克林帮车行老板去麦克豪宅收车</div><div class="caption-box" id="caption-2" style="opacity: 0;">不料被后座上的老麦拿枪顶住了后脑勺</div><div class="caption-box" id="caption-3" style="opacity: 0;">老麦欣赏这小伙子的胆识与车技</div><div class="caption-box" id="caption-4" style="opacity: 0;">两人一见如故成了师徒</div><div class="caption-box" id="caption-5" style="opacity: 0;">然而好景不长</div><div class="caption-box" id="caption-6" style="opacity: 0;">老麦撞破妻子跟网球教练偷情</div><div class="caption-box" id="caption-7" style="opacity: 0;">暴怒之下开车拉垮了一栋悬崖豪宅</div><div class="caption-box" id="caption-8" style="opacity: 0;">结果那竟是墨西哥大毒枭马德拉索的情妇家</div><div class="caption-box" id="caption-9" style="opacity: 0;">面对两百五十万美元的索命巨债</div><div class="caption-box" id="caption-10" style="opacity: 0;">老麦只能带上小富</div><div class="caption-box" id="caption-11" style="opacity: 0;">重操旧业去抢劫顶级珠宝店</div>
+    </div>
+  </div>
+
+  <script>
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+    window.__timelines['scene-02'] = tl;
+
+    // Entrance
+    tl.from('.title-area', { y: -30, opacity: 0, duration: 0.8, ease: 'power3.out' }, 0.1);
+    tl.from('.logic-box', { x: -40, opacity: 0, duration: 0.7, stagger: 0.15, ease: 'power2.out' }, 0.3);
+    tl.from('.art-column', { scale: 0.95, opacity: 0, duration: 0.9, ease: 'back.out(1.2)' }, 0.4);
+
+    // Subtitles sequence
+    const clauseDur = 3.03;
+    
+    tl.to('#caption-0', { opacity: 1, y: 0, duration: 0.3 }, 0.50);
+    tl.to('#caption-0', { opacity: 0, y: -10, duration: 0.25 }, 3.43);
+    
+
+    tl.to('#caption-1', { opacity: 1, y: 0, duration: 0.3 }, 3.53);
+    tl.to('#caption-1', { opacity: 0, y: -10, duration: 0.25 }, 6.46);
+    
+
+    tl.to('#caption-2', { opacity: 1, y: 0, duration: 0.3 }, 6.56);
+    tl.to('#caption-2', { opacity: 0, y: -10, duration: 0.25 }, 9.49);
+    
+
+    tl.to('#caption-3', { opacity: 1, y: 0, duration: 0.3 }, 9.59);
+    tl.to('#caption-3', { opacity: 0, y: -10, duration: 0.25 }, 12.52);
+    
+
+    tl.to('#caption-4', { opacity: 1, y: 0, duration: 0.3 }, 12.62);
+    tl.to('#caption-4', { opacity: 0, y: -10, duration: 0.25 }, 15.55);
+    
+
+    tl.to('#caption-5', { opacity: 1, y: 0, duration: 0.3 }, 15.65);
+    tl.to('#caption-5', { opacity: 0, y: -10, duration: 0.25 }, 18.58);
+    
+
+    tl.to('#caption-6', { opacity: 1, y: 0, duration: 0.3 }, 18.68);
+    tl.to('#caption-6', { opacity: 0, y: -10, duration: 0.25 }, 21.61);
+    
+
+    tl.to('#caption-7', { opacity: 1, y: 0, duration: 0.3 }, 21.71);
+    tl.to('#caption-7', { opacity: 0, y: -10, duration: 0.25 }, 24.64);
+    
+
+    tl.to('#caption-8', { opacity: 1, y: 0, duration: 0.3 }, 24.74);
+    tl.to('#caption-8', { opacity: 0, y: -10, duration: 0.25 }, 27.67);
+    
+
+    tl.to('#caption-9', { opacity: 1, y: 0, duration: 0.3 }, 27.77);
+    tl.to('#caption-9', { opacity: 0, y: -10, duration: 0.25 }, 30.70);
+    
+
+    tl.to('#caption-10', { opacity: 1, y: 0, duration: 0.3 }, 30.80);
+    tl.to('#caption-10', { opacity: 0, y: -10, duration: 0.25 }, 33.73);
+    
+
+    tl.to('#caption-11', { opacity: 1, y: 0, duration: 0.3 }, 33.83);
+    tl.to('#caption-11', { opacity: 0, y: -10, duration: 0.25 }, 36.76);
+    
+
+    // Keep active until end
+    tl.to({}, { duration: 38.36 }, 0);
+  </script>
+</body>
+</html>
