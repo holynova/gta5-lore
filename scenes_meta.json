@@ -4,7 +4,7 @@
   "scenes": [
     {
       "id": "scene-01",
-      "title": "罪恶前因 · 北杨克顿背叛与假死隐退",
+      "title": "罪恶前因——北杨克顿背叛与假死隐退",
       "eyebrow": "TIMELINE 01 / NORTH YANKTON BETRAYAL",
       "image": "assets/images/scene01_michael.jpg",
       "char_name": "迈克尔·迪圣塔",
@@ -43,7 +43,7 @@
     },
     {
       "id": "scene-02",
-      "title": "命运交汇 · 偷车青年与重出江湖",
+      "title": "命运交汇——偷车青年与重出江湖",
       "eyebrow": "TIMELINE 02 / FRANKLIN MEETS MICHAEL",
       "image": "assets/images/scene02_franklin.jpg",
       "char_name": "富兰克林·克林顿",
@@ -82,7 +82,7 @@
     },
     {
       "id": "scene-03",
-      "title": "疯狗入局 · 崔佛识破老友金蝉脱壳",
+      "title": "疯狗入局——崔佛识破老友金蝉脱壳",
       "eyebrow": "TIMELINE 03 / TREVOR'S RAGE & REUNION",
       "image": "assets/images/scene03_trevor.jpg",
       "char_name": "崔佛·菲利普",
@@ -121,7 +121,7 @@
     },
     {
       "id": "scene-04",
-      "title": "四面楚歌 · 特工要挟与资本压榨",
+      "title": "四面楚歌——特工要挟与资本压榨",
       "eyebrow": "TIMELINE 04 / ENCIRCLED BY CORRUPTION",
       "image": "assets/images/scene04_heist.jpg",
       "char_name": "德温 & FIB黑手",
@@ -160,7 +160,7 @@
     },
     {
       "id": "scene-05",
-      "title": "世纪大案 · 联合储蓄4吨黄金大劫案",
+      "title": "世纪大案——联合储蓄4吨黄金大劫案",
       "eyebrow": "TIMELINE 05 / THE BIG SCORE",
       "image": "assets/images/scene05_bigscore.jpg",
       "char_name": "联合储蓄世纪大案",
@@ -199,7 +199,7 @@
     },
     {
       "id": "scene-06",
-      "title": "终局抉择 · 第三种选择：三男一狗大团圆！",
+      "title": "终局抉择——第三种选择：三男一狗大团圆！",
       "eyebrow": "TIMELINE 06 / THE THIRD OPTION: DEATHWISH",
       "image": "assets/images/scene06_ending.jpg",
       "char_name": "洛圣都三叉戟",
